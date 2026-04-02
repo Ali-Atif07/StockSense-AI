@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Sense</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="./static/style.css">
+</head>
+
+<body>
+  <header>
+    <h1>📈 Stock Intelligence Dashboard</h1>
+    <span class="badge">NSE Live</span>
+    <span class="badge real-badge">✓ Real Data</span>
+    <div class="search-wrap">
+      <input id="sym-input" placeholder="Search any NSE symbol…" maxlength="20"
+        onkeydown="if(event.key==='Enter')searchSymbol()" />
+      <div id="suggestions" class="suggestions-box"></div>
+      <button id="search-btn" onclick="searchSymbol()">Fetch →</button>
+      <div id="search-msg"></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-title">Companies</div>
+      <div id="company-list">
+        <div class="loading" style="height:60px">Loading…</div>
+      </div>
+    </aside>
+    <main class="main" id="main-panel">
+      <div class="loading">Select a company to view analytics</div>
+    </main>
+  </div>
+  <script src="./static/script.js"></script>
+</body>
+
+</html>
