@@ -1,64 +1,183 @@
-# Stock Data Intelligence Dashboard
+# 🚀 StockSense AI — Stock Intelligence Dashboard
 
-A mini financial data platform built with FastAPI, SQLite, and Chart.js — fetching real NSE stock data for 8 major Indian companies.
+A lightweight, full-stack stock analytics platform that turns raw NSE market data into meaningful insights — built using FastAPI, SQLite, and Chart.js.
 
-## Features
+Designed to simulate a real-world financial data product with clean APIs, intelligent metrics, and an interactive dashboard.
 
-- **Real NSE data** via yfinance — RELIANCE, TCS, INFY, HDFCBANK, ICICIBANK, WIPRO, TATAMOTORS, BAJFINANCE
-- **Calculated metrics** — Daily Return, 7-Day MA, 30-Day MA, Volatility Score, 52-Week High/Low
-- **REST API** with Swagger docs at `/docs`
-- **Comparison endpoint** — normalised performance + correlation between any two stocks
-- **Custom sentiment score** — composite metric combining momentum, volatility, and trend signals
-- **Top Gainers/Losers** — ranked over configurable time window
-- **Interactive dashboard** — period filters, company selector, live charts
+---
 
-## Setup
+## ✨ What this project does
+
+Instead of just showing stock prices, StockSense AI helps you **understand the market**:
+
+* 📈 Track real NSE stock data (powered by Yahoo Finance)
+* 🧠 Get AI-inspired sentiment insights
+* ⚖️ Compare companies with normalized performance
+* 🔍 Discover top gainers & losers
+* 📊 Visualize trends with interactive charts
+
+---
+
+## 🧩 Key Features
+
+* **Live NSE Data**
+  Covers major companies like RELIANCE, TCS, INFY, HDFCBANK, ICICIBANK, WIPRO, TATAMOTORS, BAJFINANCE
+
+* **Smart Metrics**
+
+  * Daily Returns
+  * Moving Averages (7D / 30D)
+  * Volatility Score
+  * Momentum Tracking
+  * 52-week High/Low
+
+* **AI Sentiment Engine**
+  A custom scoring system (0–100) combining trend, momentum, and stability
+
+* **Comparison Engine**
+  Compare any two stocks with normalized performance + correlation
+
+* **Top Movers**
+  Automatically detect best & worst performing stocks
+
+* **Interactive Dashboard**
+  Clean UI with filters, charts, and real-time updates
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend:** FastAPI (Python)
+* **Database:** SQLite
+* **Data Processing:** Pandas, NumPy, yfinance
+* **Frontend:** Vanilla JavaScript + Chart.js
+* **Docs:** Swagger UI (`/docs`)
+
+---
+
+## ⚙️ Run Locally (Without Docker)
 
 ```bash
-# Clone and install
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# Run (seeds database automatically on first start, ~30 seconds)
+# 2. Start the server
 uvicorn main:app --reload --port 8000
 ```
 
-Open `http://localhost:8000` for the dashboard.  
-Open `http://localhost:8000/docs` for the Swagger API documentation.
+👉 Open in browser:
 
-## API Endpoints
+* App → http://localhost:8000
+* API Docs → http://localhost:8000/docs
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/companies` | All tracked companies with latest price |
-| GET | `/data/{symbol}?days=30` | OHLCV + metrics for N days |
-| GET | `/summary/{symbol}` | 52-week stats, volatility, momentum |
-| GET | `/compare?symbol1=TCS&symbol2=INFY&days=30` | Normalised comparison + correlation |
-| GET | `/gainers?days=7` | Top 3 gainers and losers |
-| GET | `/sentiment/{symbol}` | Composite AI sentiment score (0–100) |
+---
 
-## Custom Metrics
+## 🐳 Run with Docker (Recommended)
 
-**Volatility Score** — Annualised standard deviation of daily returns over a 7-day rolling window. Higher = more volatile.
+### 1. Build Image
 
-**Momentum Score** — Percentage price change over the last 30 trading days. Positive = uptrend.
-
-**Sentiment Score (0–100)** — Composite metric built from:
-- Momentum component (0–50): maps 30-day return to a score
-- Stability component (0–30): lower volatility scores higher
-- Trend component (0–20): close price above 7-day MA = bullish signal
-
-## Data Flow
-
-```
-yfinance (Yahoo Finance) → Python/Pandas cleaning → SQLite → FastAPI → Chart.js dashboard
+```bash
+docker build -t stocksense-ai .
 ```
 
-Data is seeded on startup and stored locally. Restart the server to refresh data.
+### 2. Run Container
 
-## Tech Stack
+```bash
+docker run -d -p 8000:8000 stocksense-ai
+```
 
-- **Backend**: FastAPI (Python)
-- **Database**: SQLite (easily swappable to PostgreSQL — change DB_PATH to connection string)
-- **Data**: yfinance, Pandas, NumPy
-- **Frontend**: Vanilla JS + Chart.js
-- **Docs**: FastAPI Swagger (auto-generated at /docs)
+👉 Open:
+
+* http://localhost:8000
+
+---
+
+## 🌍 Deployment
+
+This project is designed to run as a **single container (frontend + backend together)**.
+
+You can deploy easily on:
+
+* **Render**
+* **Railway**
+* **DigitalOcean**
+
+No environment variables required — frontend automatically uses the same backend.
+
+---
+
+## 🔌 API Overview
+
+All endpoints are designed to be simple and usable for real-world applications.
+
+| Endpoint              | What it does                                             |
+| --------------------- | -------------------------------------------------------- |
+| `/companies`          | Returns all tracked companies with latest price & sector |
+| `/data/{symbol}`      | Historical stock data with calculated metrics            |
+| `/summary/{symbol}`   | Key stats like averages, volatility, momentum            |
+| `/compare`            | Compare two stocks side-by-side                          |
+| `/gainers`            | Shows top performing and worst performing stocks         |
+| `/sentiment/{symbol}` | Returns AI-based sentiment score                         |
+| `/summary/{query}` | Returns All Companies Symbol that matches with query                          |
+
+
+---
+
+## 🧠 How the Intelligence Works
+
+* **Volatility** → Measures how unstable a stock is
+* **Momentum** → Shows direction of movement (up/down trend)
+* **Trend Signal** → Based on moving averages
+
+### Final Sentiment Score (0–100):
+
+* 0–30 → Bearish 📉
+* 30–70 → Neutral ⚖️
+* 70–100 → Bullish 📈
+
+---
+
+## 🔄 Data Flow
+
+```
+Yahoo Finance → Pandas Processing → SQLite → FastAPI → Frontend Dashboard
+```
+
+* Data is fetched and processed on startup
+* Stored locally for fast performance
+* Automatically used by APIs
+
+---
+
+## 🎯 Why this project stands out
+
+* Clean full-stack architecture
+* Real-world financial logic (not dummy data)
+* API-first design (production mindset)
+* Docker-ready deployment
+* Focus on insights, not just data
+
+---
+
+## 📌 Future Improvements
+
+* Real-time WebSocket updates
+* More stocks (full NSE coverage)
+* Portfolio tracking
+* ML-based price prediction
+* User authentication
+
+---
+
+## 👨‍💻 Author
+
+Built as part of an engineering assessment to demonstrate:
+
+* Backend API design
+* Data processing skills
+* Frontend integration
+* Deployment readiness
+
+---
+
+⭐ If you found this interesting, feel free to explore or extend it!
